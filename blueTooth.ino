@@ -11,13 +11,16 @@ void setup() {
 }
 
 void loop() {
+  //手机————>Arduino
   if(bluetooth.available()){
     char c = (char)bluetooth.read();
+    Serial.println("手机：");
     Serial.write(c);
   }
-  
+    //Arduino—————>手机
   if(Serial.available()){ 
     char d=(char)Serial.read();
+    bluetooth.println("Arduino:");
     bluetooth.write(d);
    }
   }
