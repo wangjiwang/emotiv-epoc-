@@ -1,20 +1,23 @@
+#include <SoftwareSerial.h>
+
+const int rxpin = 2;
+const int txpin = 3; 
+SoftwareSerial bluetooth(rxpin,txpin);
 void setup() {
   Serial.begin(9600);
-  pinMode(13, OUTPUT);
+  bluetooth.begin(9600);
+  Serial.println("Serial ready");
+  bluetooth.println("Bluetooth ready");
 }
 
 void loop() {
-  while(Serial.available()){ 
-    int c=Serial.read();
-    if(c==97) { 
-    Serial.println("BT is ready!"); 
-    Serial.write("Serial--13--high"); // 返回到手机调试程序上 
-    digitalWrite(13, HIGH); 
-    } 
-    if(c==98) { 
-      Serial.write("Serial--13--low"); 
-      digitalWrite(13, LOW); 
-     } 
+  if(bluetooth.available()){
+    char c = (char)bluetooth.read();
+    Serial.write(c);
+  }
+  
+  if(Serial.available()){ 
+    char d=(char)Serial.read();
+    bluetooth.write(d);
    }
   }
-
